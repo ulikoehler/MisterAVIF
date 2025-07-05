@@ -64,5 +64,22 @@ For example, checkout the `q05.avif` file, which is the lowest quality setting b
 
 ![Example image of Nuremberg, Germany, compressed to 5% quality using AVIF](./examples/Nuremberg-q05.avif)
 
+Kind of looks the same as the above image, right? But the file size is only `144KB`, which is only `4.3%` of the size of the original image.
 
-What's most interesting is 
+Well, that's because AVIF is great. However, when zooming it, you can see some compression artifacts. But instead of zooming in individually, checkout `Section b2.png`. `b` and `2` are coordinates of a small sub-image (`abc` and `123`). `MisterAVIF` generates nine such sections from every quality level, with `b2` being right in the middle of the image. It will then combine those images into a single image called `Section b2.png` (saved as PNG because it's lossless), so you can compare it directly:
+
+![Example image of Nuremberg, Germany, section B2, quality comparison](./examples/Nuremberg-q05.avif)
+
+As you can see, at the lower quality levels, the compression artifacts become more and more visible.
+
+Typically, you would want to find the least quality setting that has an acceptable image quality for your use case (archiving vs distribution vs web use, each usecase can have different requirements). In my case, I choose `q=25` to be acceptable and just to be sure, I'll go to `q=30` to be on the safe side. With `q=30`, even the individual roof tiles are still easily discernable - keeping in mind this is only a zoomed-in section of the image, the full image looks great at that quality level:
+
+What's interesting now is to take a look at the `Filesizes.png` file, which is a chart of the file sizes of all the generated files:
+
+![Filesizes chart of the Nuremberg example](./examples/Nuremberg-Filesizes.png)
+
+As you can see, from a certain point, decreasing the quality has diminishing returns on decreasing the file size, while substantially degrading visual quality of the image. Depending on the typical resolution, source encoding and other factors, this point can be different, so my recommendation is to select the quality level using `misteravif` for a complete set of more or less similar images, not for your entire photo collection at once.
+
+Here's the final image we selected: `q30.avif`, with a filesize of `400k`, that is `12.1%` of the origin image's size, but still looking great:
+
+![Example image of Nuremberg, Germany, compressed to 30% quality using AVIF](./examples/Nuremberg-q30.avif)
